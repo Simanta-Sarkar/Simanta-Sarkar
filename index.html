@@ -405,6 +405,7 @@
   .tl-note{
     font-family:var(--font-mono); font-size:.8rem; color:var(--muted);
     margin:var(--s-2) 0 var(--s-5);
+    max-width:70ch;
   }
   .tl-bullet{ color:var(--paper); opacity:.92; font-size:.95rem; max-width:70ch; }
 
@@ -623,14 +624,11 @@
           <p>I'm an FPGA engineer working on RF data-converter bring-up, AXI DMA architectures, and embedded Linux for Xilinx Zynq / Zynq UltraScale+ platforms at Berylline Labs. My background is in VLSI and embedded systems — an M.Tech from IIIT Guwahati — with hands-on time across ADC/DAC interfacing, digital signal processing, and RTL functional verification.</p>
           <p class="note">Graduated with an M.Tech from IIIT Guwahati in July 2026. Joined Berylline Labs as an intern during my final semester; that internship has since converted into this full-time role.</p>
           <div class="chip-row">
-            <span class="chip">ZedBoard</span>
-            <span class="chip">ZC702</span>
-            <span class="chip">VMK180</span>
-            <span class="chip">KCU105</span>
-            <span class="chip">ZCU102</span>
-            <span class="chip">ZCU104</span>
-            <span class="chip">Arty A7</span>
-            <span class="chip">CmodA7-35T</span>
+            <span class="chip">Zynq-7000</span>
+            <span class="chip">Zynq UltraScale+ MPSoC</span>
+            <span class="chip">Versal</span>
+            <span class="chip">Kintex UltraScale</span>
+            <span class="chip">Artix-7</span>
           </div>
         </div>
         <div class="stat-panel reveal">
@@ -640,7 +638,6 @@
           <div class="stat-row"><span class="k">Location</span><span class="v">Kolkata, WB</span></div>
           <div class="stat-row"><span class="k">M.Tech CGPA</span><span class="v">8.08</span></div>
           <div class="stat-row"><span class="k">B.Tech CGPA</span><span class="v">6.92</span></div>
-          <div class="stat-row"><span class="k">Based in</span><span class="v">Guwahati, IN</span></div>
         </div>
       </div>
     </div>
@@ -671,15 +668,16 @@
           <div class="cat">FPGA / SoC Platforms</div>
           <div class="skill-tags">
             <span class="chip">Zynq-7000</span><span class="chip">Zynq UltraScale+ MPSoC</span>
-            <span class="chip">KCU105</span><span class="chip">VMK180</span><span class="chip">ZC702</span>
-            <span class="chip">ZCU102/104</span><span class="chip">ZedBoard</span><span class="chip">Artix-7</span>
+            <span class="chip">Versal</span><span class="chip">Kintex UltraScale</span>
+            <span class="chip">Artix-7</span><span class="chip">PetaLinux</span><span class="chip">Vivado / Vitis</span>
           </div>
         </div>
         <div class="skill-card reveal">
           <div class="cat">Data Converters &amp; Mixed-Signal</div>
           <div class="skill-tags">
-            <span class="chip">LTC2175</span><span class="chip">AD9082</span><span class="chip">AFE7950</span>
-            <span class="chip">Multi-GSPS ADC/DAC</span><span class="chip">HMC7044</span><span class="chip">PLL/MMCM</span>
+            <span class="chip">RF Data Converters</span><span class="chip">Multi-GSPS ADC/DAC</span>
+            <span class="chip">High-Speed ADC Interfacing</span><span class="chip">Clock Distribution / Jitter Cleaning</span>
+            <span class="chip">PLL/MMCM</span>
           </div>
         </div>
       </div>
@@ -698,6 +696,7 @@
             <span class="tl-org">— Berylline Labs Pvt. Ltd., Kolkata, WB</span>
             <span class="tl-dates">FEB 2026 — PRESENT</span>
           </div>
+          <p class="tl-note">// Client engagements are covered by NDA — project details are described at capability level. Happy to go deeper on technical approach in conversation.</p>
 
           <div class="achv-list">
 
@@ -706,14 +705,14 @@
                 <span class="chev">▸</span>
                 <span class="txt">
                   <div class="title">JESD204C RF Data-Converter Bring-Up</div>
-                  <div class="summary">Brought up serial links across two data converters and three boards.</div>
+                  <div class="summary">Brought up multi-lane serial links across multiple converter families and FPGA platforms.</div>
                 </span>
               </button>
               <div class="achv-tags">
-                <span class="chip">AD9082</span><span class="chip">AFE7950</span><span class="chip">VMK180</span><span class="chip">KCU105</span><span class="chip">ZCU102</span>
+                <span class="chip">JESD204C</span><span class="chip">RF Data Converters</span><span class="chip">Multi-GSPS</span><span class="chip">Xilinx FPGA</span>
               </div>
               <div class="achv-detail">
-                <div class="achv-detail-inner">Bring up JESD204C RF data-converter links for AD9082 (VMK180) and AFE7950 (KCU105, ZCU102), validating 4 GSPS symmetric and 6/12 GSPS asymmetric lane configurations at line rates up to 24.75 Gbps.</div>
+                <div class="achv-detail-inner">Bring up and validate JESD204C RF data-converter links on Xilinx FPGA platforms across multiple converter families, covering both symmetric and asymmetric sample-rate configurations at multi-gigabit lane rates.</div>
               </div>
             </div>
 
@@ -722,14 +721,14 @@
                 <span class="chev">▸</span>
                 <span class="txt">
                   <div class="title">Embedded Linux &amp; Clock Systems</div>
-                  <div class="summary">Debugged PetaLinux images and a PLL clock mis-lock blocking bring-up.</div>
+                  <div class="summary">Debugged PetaLinux images and a clock-synthesizer PLL mis-lock blocking bring-up.</div>
                 </span>
               </button>
               <div class="achv-tags">
-                <span class="chip">PetaLinux</span><span class="chip">Device Tree</span><span class="chip">HMC7044</span><span class="chip">Zynq UltraScale+ MPSoC</span>
+                <span class="chip">PetaLinux</span><span class="chip">Device Tree</span><span class="chip">Clock Distribution</span><span class="chip">Zynq UltraScale+ MPSoC</span>
               </div>
               <div class="achv-detail">
-                <div class="achv-detail-inner">Build and debug PetaLinux embedded Linux images for Zynq UltraScale+ MPSoC targets — resolving device-tree corruption and duplicate phandle conflicts, and correcting an HMC7044 PLL mis-lock that was blocking JESD204C FSM bring-up.</div>
+                <div class="achv-detail-inner">Build and debug PetaLinux embedded Linux images for Zynq UltraScale+ MPSoC targets — resolving device-tree corruption and duplicate phandle conflicts, and correcting a clock-synthesizer PLL mis-lock that was blocking JESD204C link bring-up.</div>
               </div>
             </div>
 
@@ -753,15 +752,15 @@
               <button class="achv-toggle" aria-expanded="false">
                 <span class="chev">▸</span>
                 <span class="txt">
-                  <div class="title">Team Contributions</div>
-                  <div class="summary">Contributed to three additional deliverables alongside the core team.</div>
+                  <div class="title">Cross-Domain Team Contributions</div>
+                  <div class="summary">Contributed to sensing, DSP, and biomedical-electronics deliverables.</div>
                 </span>
               </button>
               <div class="achv-tags">
-                <span class="chip">VHDL</span><span class="chip">LiDAR Sensor Fusion</span><span class="chip">DSP Filter Chain</span><span class="chip">PLL/MMCM</span>
+                <span class="chip">VHDL</span><span class="chip">Sensor Fusion</span><span class="chip">DSP Filter Chain</span><span class="chip">PLL/MMCM</span><span class="chip">Safety FSM</span>
               </div>
               <div class="achv-detail">
-                <div class="achv-detail-inner">Contributed to additional cross-domain deliverables as part of the wider engineering team: a VHDL sensor-fusion LiDAR system for railway pole detection (CSIR-CGCRI-sponsored, ZCU104/Arty A7, UART packet-parser FSM), a multi-rate DSP filter chain (51-tap Kaiser FIR, &gt;80 dB stopband attenuation), and a PLL/MMCM-driven ultrasound carrier design with safety-FSM and SPI DAC control for a medical stimulator device.</div>
+                <div class="achv-detail-inner">Contributed to additional cross-domain deliverables as part of the wider engineering team: a VHDL multi-sensor fusion design with a UART packet-parser FSM, a multi-rate DSP filter chain with high stopband attenuation, and a PLL/MMCM-driven signal-generation design with safety FSM and SPI DAC control for a biomedical-electronics application.</div>
               </div>
             </div>
 
@@ -906,7 +905,7 @@
 <footer>
   <div class="container footer-inner">
     <span>SIMANTA_SARKAR // FPGA_RTL_DESIGN_ENGINEER</span>
-    <span>GUWAHATI, ASSAM, IN — 2026</span>
+    <span>KOLKATA, WEST BENGAL, IN — 2026</span>
   </div>
 </footer>
 
@@ -968,7 +967,7 @@
     // CH1 green — steady ADC-like capture
     drawTrace(0.018, ampScale, t*1.4, 'rgba(76,255,147,0.85)', 8, -h*0.10, null);
 
-    // CH2 amber — burst-modulated pulse train (nods to LIPUS burst modulator work)
+    // CH2 amber — burst-modulated pulse train
     drawTrace(0.05, ampScale*0.6, t*2.1, 'rgba(255,176,32,0.75)', 6, h*0.16, function(x){
       var cyc = 260;
       var pos = (x + t*160) % cyc;
