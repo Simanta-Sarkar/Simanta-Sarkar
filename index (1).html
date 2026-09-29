@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simanta Sarkar — FPGA / RTL Design Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0C1214;
+    --bg-elevated:#121A1C;
+    --bg-card:#141D1F;
+    --grid-line:#1A2624;
+    --grid-line-strong:#233330;
+    --green:#4CFF93;
+    --green-dim:#2E9A5C;
+    --green-wash:rgba(76,255,147,0.09);
+    --amber:#FFB020;
+    --amber-wash:rgba(255,176,32,0.09);
+    --cyan:#5DD9E8;
+    --paper:#EDEFEA;
+    --muted:#82988F;
+    --muted-dim:#4E635C;
+    --card-border:#20302B;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, 'Courier New', monospace;
+    --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --s-1:.25rem; --s-2:.5rem; --s-3:.75rem; --s-4:1rem; --s-5:1.25rem; --s-6:1.5rem;
+    --s-8:2rem; --s-10:2.5rem; --s-12:3rem; --s-16:4rem; --s-20:5rem; --s-24:6rem;
+    --container:1120px;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--paper);
+    font-family:var(--font-sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{ background:var(--green); color:#04120A; }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; }
+
+  :focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  .container{
+    max-width:var(--container);
+    margin:0 auto;
+    padding:0 var(--s-6);
+  }
+  @media (min-width:900px){ .container{ padding:0 var(--s-8); } }
+
+  /* ---------- Eyebrow / labels ---------- */
+  .eyebrow{
+    display:flex; align-items:center; gap:var(--s-3);
+    font-family:var(--font-mono);
+    font-size:.75rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--green);
+    margin-bottom:var(--s-4);
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:1px;
+    background:var(--green);
+    display:inline-block;
+  }
+
+  h2.section-title{
+    font-family:var(--font-sans);
+    font-weight:700;
+    font-size:clamp(1.6rem, 3.2vw, 2.5rem);
+    margin:0 0 var(--s-10) 0;
+    max-width:20ch;
+    letter-spacing:-0.01em;
+  }
+
+  section{ padding:var(--s-16) 0; }
+  @media (min-width:900px){ section{ padding:var(--s-24) 0; } }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(12,18,20,0.78);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--grid-line);
+  }
+  .nav-inner{
+    max-width:var(--container);
+    margin:0 auto;
+    padding:var(--s-3) var(--s-6);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-mark{
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:.95rem;
+    letter-spacing:.04em;
+    display:flex; align-items:center; gap:var(--s-2);
+    text-decoration:none;
+  }
+  .nav-mark .dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 8px var(--green);
+    flex-shrink:0;
+  }
+  .nav-links{
+    display:none;
+    gap:var(--s-6);
+    list-style:none;
+    margin:0; padding:0;
+  }
+  @media (min-width:800px){ .nav-links{ display:flex; } }
+  .nav-links a{
+    text-decoration:none;
+    font-family:var(--font-mono);
+    font-size:.78rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    display:flex; align-items:center; gap:var(--s-2);
+    padding:var(--s-2) 0;
+    transition:color .2s ease;
+  }
+  .nav-links a .led{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--muted-dim);
+    transition:background .25s ease, box-shadow .25s ease;
+  }
+  .nav-links a.active{ color:var(--paper); }
+  .nav-links a.active .led{ background:var(--green); box-shadow:0 0 6px var(--green); }
+  .nav-links a:hover{ color:var(--paper); }
+
+  .nav-cta{
+    display:none;
+  }
+  @media (min-width:800px){
+    .nav-cta{
+      display:inline-flex;
+      font-family:var(--font-mono);
+      font-size:.75rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      text-decoration:none;
+      color:var(--bg);
+      background:var(--green);
+      padding:var(--s-2) var(--s-4);
+      border-radius:3px;
+      font-weight:700;
+    }
+  }
+
+  .nav-burger{
+    display:flex; background:none; border:1px solid var(--grid-line-strong);
+    color:var(--paper); width:38px; height:34px; border-radius:4px;
+    align-items:center; justify-content:center; cursor:pointer;
+  }
+  @media (min-width:800px){ .nav-burger{ display:none; } }
+  .nav-burger svg{ width:18px; height:18px; }
+
+  .mobile-menu{
+    position:fixed; inset:0; z-index:99;
+    background:var(--bg);
+    display:none;
+    flex-direction:column;
+    padding:calc(var(--s-16)) var(--s-8) var(--s-8);
+  }
+  .mobile-menu.open{ display:flex; }
+  .mobile-menu a{
+    font-family:var(--font-mono);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    text-decoration:none;
+    color:var(--paper);
+    font-size:1.1rem;
+    padding:var(--s-4) 0;
+    border-bottom:1px solid var(--grid-line);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+    border-bottom:1px solid var(--grid-line);
+  }
+  .hero canvas{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    display:block;
+  }
+  .hero-scrim{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(12,18,20,0.15) 0%, rgba(12,18,20,0.55) 55%, rgba(12,18,20,0.92) 100%);
+    pointer-events:none;
+  }
+  .hero-content{
+    position:relative; z-index:2;
+    width:100%;
+    padding:0 var(--s-6) var(--s-16);
+  }
+  @media (min-width:900px){ .hero-content{ padding:0 var(--s-8) var(--s-20); } }
+  .hero-inner{
+    max-width:var(--container);
+    margin:0 auto;
+  }
+  .hero-eyebrow{
+    font-family:var(--font-mono);
+    font-size:.8rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--green);
+    margin-bottom:var(--s-4);
+  }
+  .hero-name{
+    font-family:var(--font-sans);
+    font-weight:700;
+    font-size:clamp(2.6rem, 8.5vw, 5.6rem);
+    line-height:0.98;
+    letter-spacing:-0.02em;
+    margin:0 0 var(--s-5) 0;
+  }
+  .hero-tagline{
+    font-size:clamp(1rem, 1.6vw, 1.2rem);
+    color:var(--paper);
+    max-width:56ch;
+    margin:0 0 var(--s-8) 0;
+    opacity:.92;
+  }
+  .hero-cta{
+    display:flex; flex-wrap:wrap; gap:var(--s-4);
+  }
+  .btn{
+    font-family:var(--font-mono);
+    font-size:.8rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    text-decoration:none;
+    padding:var(--s-3) var(--s-5);
+    border-radius:3px;
+    display:inline-flex; align-items:center; gap:var(--s-2);
+    cursor:pointer;
+    border:1px solid var(--grid-line-strong);
+    background:transparent;
+    color:var(--paper);
+    transition:border-color .2s ease, background .2s ease, color .2s ease, transform .15s ease;
+  }
+  .btn:hover{ border-color:var(--green); color:var(--green); transform:translateY(-1px); }
+  .btn.primary{
+    background:var(--green);
+    color:#04120A;
+    border-color:var(--green);
+    font-weight:700;
+  }
+  .btn.primary:hover{ background:#69ffab; color:#04120A; }
+
+  .scope-readout{
+    position:absolute; z-index:2;
+    font-family:var(--font-mono);
+    font-size:.68rem;
+    letter-spacing:.05em;
+    line-height:1.7;
+    pointer-events:none;
+  }
+  .scope-readout.tl{ top:calc(var(--s-16) + 56px); left:var(--s-6); }
+  .scope-readout.tr{ top:calc(var(--s-16) + 56px); right:var(--s-6); text-align:right; }
+  @media (min-width:900px){
+    .scope-readout.tl{ left:var(--s-8); }
+    .scope-readout.tr{ right:var(--s-8); }
+  }
+  .ro-green{ color:var(--green); }
+  .ro-amber{ color:var(--amber); }
+  .ro-muted{ color:var(--muted); }
+  .trig-dot{
+    display:inline-block; width:7px; height:7px; border-radius:50%;
+    background:var(--green); margin-right:6px;
+    animation:blink 1.6s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:.15; } }
+  @media (prefers-reduced-motion: reduce){ .trig-dot{ animation:none; } }
+
+  .scroll-cue{
+    position:absolute; bottom:var(--s-6); left:50%; transform:translateX(-50%);
+    z-index:2;
+    font-family:var(--font-mono); font-size:.68rem; letter-spacing:.1em;
+    color:var(--muted); text-transform:uppercase;
+    display:flex; flex-direction:column; align-items:center; gap:var(--s-2);
+  }
+  .scroll-cue .chev{ animation:bob 1.8s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(5px);} }
+  @media (prefers-reduced-motion: reduce){ .scroll-cue .chev{ animation:none; } }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.is-visible{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+  }
+
+  /* ---------- About ---------- */
+  .about-grid{
+    display:grid; gap:var(--s-10);
+  }
+  @media (min-width:900px){ .about-grid{ grid-template-columns: 1.1fr .9fr; gap:var(--s-16); } }
+  .about-text p{ color:var(--paper); opacity:.9; max-width:60ch; }
+  .about-text .note{
+    margin-top:var(--s-6);
+    font-family:var(--font-mono);
+    font-size:.85rem;
+    color:var(--muted);
+    border-left:2px solid var(--green-dim);
+    padding-left:var(--s-4);
+  }
+  .chip-row{
+    display:flex; flex-wrap:wrap; gap:var(--s-2);
+    margin-top:var(--s-6);
+  }
+  .chip{
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    letter-spacing:.03em;
+    color:var(--muted);
+    border:1px solid var(--card-border);
+    padding:var(--s-2) var(--s-3);
+    border-radius:3px;
+    background:var(--bg-card);
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .chip:hover{ color:var(--green); border-color:var(--green-dim); }
+  .stat-panel{
+    background:var(--bg-card);
+    border:1px solid var(--card-border);
+    border-radius:6px;
+    padding:var(--s-6);
+  }
+  .stat-panel .label{
+    font-family:var(--font-mono); font-size:.72rem; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--muted); margin-bottom:var(--s-4);
+  }
+  .stat-row{ display:flex; justify-content:space-between; padding:var(--s-3) 0; border-bottom:1px solid var(--grid-line); }
+  .stat-row:last-child{ border-bottom:none; }
+  .stat-row .k{ color:var(--muted); font-size:.88rem; }
+  .stat-row .v{ font-family:var(--font-mono); font-size:.88rem; color:var(--paper); font-weight:600; }
+
+  /* ---------- Skills ---------- */
+  .skills-grid{
+    display:grid; gap:var(--s-5);
+    grid-template-columns:1fr;
+  }
+  @media (min-width:700px){ .skills-grid{ grid-template-columns:1fr 1fr; } }
+  .skill-card{
+    background:var(--bg-card);
+    border:1px solid var(--card-border);
+    border-radius:6px;
+    padding:var(--s-6);
+  }
+  .skill-card .cat{
+    font-family:var(--font-mono);
+    font-size:.78rem; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--amber);
+    margin-bottom:var(--s-4);
+  }
+  .skill-tags{ display:flex; flex-wrap:wrap; gap:var(--s-2); }
+
+  /* ---------- Experience timeline ---------- */
+  .timeline{ position:relative; }
+  .tl-item{
+    position:relative;
+    padding-left:var(--s-8);
+    border-left:1px solid var(--grid-line-strong);
+    padding-bottom:var(--s-12);
+  }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:"";
+    position:absolute; left:-5px; top:4px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 4px var(--bg), 0 0 8px var(--green);
+  }
+  .tl-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--s-3); margin-bottom:var(--s-1); }
+  .tl-role{ font-size:1.15rem; font-weight:700; }
+  .tl-org{ color:var(--muted); font-size:.92rem; }
+  .tl-dates{
+    font-family:var(--font-mono); font-size:.72rem; color:var(--green);
+    letter-spacing:.04em; margin-left:auto;
+  }
+  .tl-note{
+    font-family:var(--font-mono); font-size:.8rem; color:var(--muted);
+    margin:var(--s-2) 0 var(--s-5);
+    max-width:70ch;
+  }
+  .tl-bullet{ color:var(--paper); opacity:.92; font-size:.95rem; max-width:70ch; }
+
+  /* Achievement (expandable) cards */
+  .achv-list{ display:flex; flex-direction:column; gap:var(--s-3); margin-top:var(--s-4); }
+  .achv{
+    background:var(--bg-card);
+    border:1px solid var(--card-border);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .achv-toggle{
+    width:100%;
+    display:flex; align-items:center; gap:var(--s-4);
+    background:none; border:none; color:inherit;
+    padding:var(--s-4) var(--s-5);
+    cursor:pointer;
+    text-align:left;
+  }
+  .achv-toggle .chev{
+    font-family:var(--font-mono); color:var(--green); flex-shrink:0;
+    transition:transform .25s ease;
+  }
+  .achv[aria-expanded="true"] .chev{ transform:rotate(90deg); }
+  .achv-toggle .txt{ flex:1; min-width:0; }
+  .achv-toggle .title{ font-weight:700; font-size:.98rem; margin-bottom:var(--s-1); }
+  .achv-toggle .summary{ color:var(--muted); font-size:.85rem; }
+  .achv-detail{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .3s ease;
+  }
+  .achv-detail-inner{
+    padding:0 var(--s-5) var(--s-5);
+    color:var(--paper); opacity:.92; font-size:.9rem;
+  }
+  .achv-tags{ display:flex; flex-wrap:wrap; gap:var(--s-2); padding:0 var(--s-5) var(--s-4); }
+
+  /* ---------- Projects ---------- */
+  .filters{ display:flex; gap:var(--s-2); margin-bottom:var(--s-8); flex-wrap:wrap; }
+  .filter-btn{
+    font-family:var(--font-mono); font-size:.78rem; letter-spacing:.05em; text-transform:uppercase;
+    background:none; border:1px solid var(--card-border); color:var(--muted);
+    padding:var(--s-3) var(--s-5); border-radius:3px; cursor:pointer;
+    transition:all .2s ease;
+  }
+  .filter-btn.active{ color:var(--bg); background:var(--green); border-color:var(--green); font-weight:700; }
+  .filter-btn:hover:not(.active){ border-color:var(--green-dim); color:var(--paper); }
+
+  .cat-pill{
+    display:inline-block; font-family:var(--font-mono); font-size:.66rem; letter-spacing:.08em;
+    text-transform:uppercase; padding:3px 9px; border-radius:3px; margin-bottom:var(--s-3);
+  }
+  .cat-pill.fpga{ color:var(--green); background:var(--green-wash); border:1px solid var(--green-dim); }
+  .cat-pill.ml{ color:var(--amber); background:var(--amber-wash); border:1px solid rgba(255,176,32,0.35); }
+
+  .project-grid-featured{ display:grid; grid-template-columns:1fr; gap:var(--s-5); }
+  @media (min-width:800px){ .project-grid-featured{ grid-template-columns:1fr 1fr; } }
+  .project-grid-standard{ display:grid; grid-template-columns:1fr; gap:var(--s-4); margin-top:var(--s-5); }
+  @media (min-width:700px){ .project-grid-standard{ grid-template-columns:repeat(3,1fr); } }
+
+  .project-card{
+    background:var(--bg-card); border:1px solid var(--card-border); border-radius:6px;
+    padding:var(--s-6);
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .project-card.is-hidden{ display:none; }
+  .project-card h3{ margin:0 0 var(--s-1); font-size:1.1rem; }
+  .project-card .subtitle{ color:var(--muted); font-weight:400; }
+  .project-card .stack{ font-family:var(--font-mono); font-size:.75rem; color:var(--cyan); margin-bottom:var(--s-4); }
+  .project-card ul{ margin:0; padding-left:1.1rem; }
+  .project-card li{ margin-bottom:var(--s-2); font-size:.92rem; opacity:.92; }
+  .project-card li:last-child{ margin-bottom:0; }
+
+  .stat-callout{
+    display:flex; align-items:baseline; gap:var(--s-3);
+    margin-top:var(--s-5); padding-top:var(--s-4); border-top:1px solid var(--grid-line);
+  }
+  .stat-callout .num{ font-family:var(--font-mono); font-size:1.7rem; font-weight:700; color:var(--amber); line-height:1; }
+  .stat-callout .lbl{ font-size:.78rem; color:var(--muted); max-width:26ch; }
+
+  .project-card.standard{ padding:var(--s-5); }
+  .project-card.standard h3{ font-size:.98rem; }
+  .project-card.standard .desc{ color:var(--muted); font-size:.85rem; margin-top:var(--s-1); }
+
+
+  /* ---------- Education ---------- */
+  .edu-grid{ display:grid; gap:var(--s-5); }
+  @media (min-width:700px){ .edu-grid{ grid-template-columns:1fr 1fr; } }
+  .edu-card{
+    background:var(--bg-card); border:1px solid var(--card-border); border-radius:6px; padding:var(--s-6);
+  }
+  .edu-card .school{ font-weight:700; font-size:1.05rem; margin-bottom:var(--s-1); }
+  .edu-card .loc{ color:var(--muted); font-size:.85rem; margin-bottom:var(--s-3); }
+  .edu-card .degree{ font-size:.92rem; margin-bottom:var(--s-4); }
+  .edu-card .meta-row{ display:flex; justify-content:space-between; align-items:center; font-family:var(--font-mono); font-size:.8rem; }
+  .edu-card .cgpa{ color:var(--green); font-weight:700; }
+  .edu-card .dates{ color:var(--muted); }
+
+  /* ---------- Certifications ---------- */
+  .cert-line{ font-size:.95rem; color:var(--paper); opacity:.9; }
+  .cert-line .sep{ color:var(--muted-dim); margin:0 var(--s-3); }
+
+  /* ---------- Contact ---------- */
+  .contact-grid{ display:grid; gap:var(--s-4); grid-template-columns:1fr; }
+  @media (min-width:700px){ .contact-grid{ grid-template-columns:repeat(3,1fr); } }
+  .contact-card{
+    background:var(--bg-card); border:1px solid var(--card-border); border-radius:6px;
+    padding:var(--s-6);
+    display:flex; flex-direction:column; gap:var(--s-2);
+    cursor:pointer; text-decoration:none; color:inherit;
+    transition:border-color .2s ease, transform .15s ease;
+  }
+  .contact-card:hover{ border-color:var(--green-dim); transform:translateY(-2px); }
+  .contact-card .label{ font-family:var(--font-mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .contact-card .value{ font-size:1rem; font-weight:600; word-break:break-word; }
+
+  .toast{
+    position:fixed; bottom:var(--s-8); left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--green); color:#04120A; font-family:var(--font-mono); font-size:.8rem;
+    font-weight:700; padding:var(--s-3) var(--s-5); border-radius:4px;
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+    z-index:200;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  footer{
+    border-top:1px solid var(--grid-line);
+    padding:var(--s-8) 0;
+  }
+  .footer-inner{
+    display:flex; flex-wrap:wrap; gap:var(--s-4); justify-content:space-between; align-items:center;
+    font-family:var(--font-mono); font-size:.75rem; color:var(--muted-dim);
+    letter-spacing:.04em;
+  }
+
+  .back-to-top{
+    position:fixed; right:var(--s-6); bottom:var(--s-6); z-index:90;
+    width:42px; height:42px; border-radius:50%;
+    background:var(--bg-card); border:1px solid var(--card-border); color:var(--green);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    opacity:0; pointer-events:none; transform:translateY(10px);
+    transition:opacity .25s ease, transform .25s ease, border-color .2s ease;
+  }
+  .back-to-top.show{ opacity:1; pointer-events:auto; transform:translateY(0); }
+  .back-to-top:hover{ border-color:var(--green); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-mark"><span class="dot"></span>SS_</a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#about" data-nav><span class="led"></span>About</a></li>
+      <li><a href="#experience" data-nav><span class="led"></span>Experience</a></li>
+      <li><a href="#projects" data-nav><span class="led"></span>Projects</a></li>
+      <li><a href="#education" data-nav><span class="led"></span>Education</a></li>
+      <li><a href="#contact" data-nav><span class="led"></span>Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="mailto:imsimantasarkar@gmail.com">Email Me</a>
+    <button class="nav-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about">About</a>
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#education">Education</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<header class="hero" id="top">
+  <canvas id="scope-canvas"></canvas>
+  <div class="hero-scrim"></div>
+
+  <div class="scope-readout tl">
+    <div class="ro-green">CH1 · ADC CAPTURE — 500mV/DIV</div>
+    <div class="ro-amber">CH2 · BURST MOD — 200mV/DIV</div>
+  </div>
+  <div class="scope-readout tr">
+    <div class="ro-muted">TIME/DIV 2ns</div>
+    <div class="ro-green"><span class="trig-dot"></span>TRIG'D · AUTO</div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">// FPGA / RTL Design Engineer</div>
+      <h1 class="hero-name">SIMANTA<br>SARKAR</h1>
+      <p class="hero-tagline">Bringing up JESD204C RF data-converter links, AXI DMA pipelines, and embedded Linux on Xilinx Zynq / Zynq UltraScale+ platforms — with the scope probes to prove it.</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="mailto:imsimantasarkar@gmail.com">Email Me</a>
+        <a class="btn" href="https://linkedin.com/in/imsimantasarkar" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn" href="Simanta_Sarkar_FPGA_RTL_Resume.pdf" target="_blank" rel="noopener">Download Résumé ↓</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <span class="chev">▾</span>
+  </div>
+</header>
+
+<main>
+
+  <section id="about">
+    <div class="container">
+      <div class="eyebrow reveal">About</div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <h2 class="section-title">Hardware that has to work the first time.</h2>
+          <p>I'm an FPGA engineer working on RF data-converter bring-up, AXI DMA architectures, and embedded Linux for Xilinx Zynq / Zynq UltraScale+ platforms at Berylline Labs. My background is in VLSI and embedded systems — an M.Tech from IIIT Guwahati — with hands-on time across ADC/DAC interfacing, digital signal processing, and RTL functional verification.</p>
+          <p class="note">Graduated with an M.Tech from IIIT Guwahati in July 2026. Joined Berylline Labs as an intern during my final semester; that internship has since converted into this full-time role.</p>
+          <div class="chip-row">
+            <span class="chip">Zynq-7000</span>
+            <span class="chip">Zynq UltraScale+ MPSoC</span>
+            <span class="chip">Versal</span>
+            <span class="chip">Kintex UltraScale</span>
+            <span class="chip">Artix-7</span>
+          </div>
+        </div>
+        <div class="stat-panel reveal">
+          <div class="label">// Quick Readout</div>
+          <div class="stat-row"><span class="k">Role</span><span class="v">FPGA Engineer</span></div>
+          <div class="stat-row"><span class="k">Company</span><span class="v">Berylline Labs</span></div>
+          <div class="stat-row"><span class="k">Location</span><span class="v">Kolkata, WB</span></div>
+          <div class="stat-row"><span class="k">M.Tech CGPA</span><span class="v">8.08</span></div>
+          <div class="stat-row"><span class="k">B.Tech CGPA</span><span class="v">6.92</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <div class="eyebrow reveal">Skills</div>
+      <h2 class="section-title reveal">Toolchain</h2>
+      <div class="skills-grid">
+        <div class="skill-card reveal">
+          <div class="cat">RTL &amp; Verification</div>
+          <div class="skill-tags">
+            <span class="chip">Verilog</span><span class="chip">VHDL</span><span class="chip">RTL Design</span>
+            <span class="chip">FSM Architecture</span><span class="chip">Testbench Dev.</span>
+            <span class="chip">Vivado XSIM</span><span class="chip">Timing Closure</span><span class="chip">ILA / ChipScope</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="cat">High-Speed Protocols</div>
+          <div class="skill-tags">
+            <span class="chip">JESD204B/C</span><span class="chip">AXI4</span><span class="chip">AXI4-Stream</span>
+            <span class="chip">AXI4-Lite</span><span class="chip">AXI DMA (SG)</span><span class="chip">SPI</span>
+            <span class="chip">UART</span><span class="chip">Ethernet (lwIP)</span><span class="chip">PCIe</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="cat">FPGA / SoC Platforms</div>
+          <div class="skill-tags">
+            <span class="chip">Zynq-7000</span><span class="chip">Zynq UltraScale+ MPSoC</span>
+            <span class="chip">Versal</span><span class="chip">Kintex UltraScale</span>
+            <span class="chip">Artix-7</span><span class="chip">PetaLinux</span><span class="chip">Vivado / Vitis</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="cat">Data Converters &amp; Mixed-Signal</div>
+          <div class="skill-tags">
+            <span class="chip">RF Data Converters</span><span class="chip">Multi-GSPS ADC/DAC</span>
+            <span class="chip">High-Speed ADC Interfacing</span><span class="chip">Clock Distribution / Jitter Cleaning</span>
+            <span class="chip">PLL/MMCM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="container">
+      <div class="eyebrow reveal">Experience</div>
+      <h2 class="section-title reveal">Where I've worked</h2>
+
+      <div class="timeline reveal">
+        <div class="tl-item">
+          <div class="tl-head">
+            <span class="tl-role">FPGA Engineer</span>
+            <span class="tl-org">— Berylline Labs Pvt. Ltd., Kolkata, WB</span>
+            <span class="tl-dates">FEB 2026 — PRESENT</span>
+          </div>
+          <p class="tl-note">// Client engagements are covered by NDA — project details are described at capability level. Happy to go deeper on technical approach in conversation.</p>
+
+          <div class="achv-list">
+
+            <div class="achv" data-expanded="false">
+              <button class="achv-toggle" aria-expanded="false">
+                <span class="chev">▸</span>
+                <span class="txt">
+                  <div class="title">JESD204C RF Data-Converter Bring-Up</div>
+                  <div class="summary">Brought up multi-lane serial links across multiple converter families and FPGA platforms.</div>
+                </span>
+              </button>
+              <div class="achv-tags">
+                <span class="chip">JESD204C</span><span class="chip">RF Data Converters</span><span class="chip">Multi-GSPS</span><span class="chip">Xilinx FPGA</span>
+              </div>
+              <div class="achv-detail">
+                <div class="achv-detail-inner">Bring up and validate JESD204C RF data-converter links on Xilinx FPGA platforms across multiple converter families, covering both symmetric and asymmetric sample-rate configurations at multi-gigabit lane rates.</div>
+              </div>
+            </div>
+
+            <div class="achv" data-expanded="false">
+              <button class="achv-toggle" aria-expanded="false">
+                <span class="chev">▸</span>
+                <span class="txt">
+                  <div class="title">Embedded Linux &amp; Clock Systems</div>
+                  <div class="summary">Debugged PetaLinux images and a clock-synthesizer PLL mis-lock blocking bring-up.</div>
+                </span>
+              </button>
+              <div class="achv-tags">
+                <span class="chip">PetaLinux</span><span class="chip">Device Tree</span><span class="chip">Clock Distribution</span><span class="chip">Zynq UltraScale+ MPSoC</span>
+              </div>
+              <div class="achv-detail">
+                <div class="achv-detail-inner">Build and debug PetaLinux embedded Linux images for Zynq UltraScale+ MPSoC targets — resolving device-tree corruption and duplicate phandle conflicts, and correcting a clock-synthesizer PLL mis-lock that was blocking JESD204C link bring-up.</div>
+              </div>
+            </div>
+
+            <div class="achv" data-expanded="false">
+              <button class="achv-toggle" aria-expanded="false">
+                <span class="chev">▸</span>
+                <span class="txt">
+                  <div class="title">AXI DMA Architecture &amp; Hardware Debug</div>
+                  <div class="summary">Built the DMA datapath and root-caused hardware bugs with ILA.</div>
+                </span>
+              </button>
+              <div class="achv-tags">
+                <span class="chip">AXI4-Stream</span><span class="chip">Scatter-Gather DMA</span><span class="chip">ILA</span>
+              </div>
+              <div class="achv-detail">
+                <div class="achv-detail-inner">Architect AXI4-Stream and Scatter-Gather DMA pipelines for multi-channel ADC/DAC data movement between PL and PS, enabling real-time RF signal acquisition streamed to a host over Ethernet; root-cause hardware defects via ILA-based waveform capture, including clock-domain routing and datapath width-mismatch issues.</div>
+              </div>
+            </div>
+
+            <div class="achv" data-expanded="false">
+              <button class="achv-toggle" aria-expanded="false">
+                <span class="chev">▸</span>
+                <span class="txt">
+                  <div class="title">Cross-Domain Team Contributions</div>
+                  <div class="summary">Contributed to sensing, DSP, and biomedical-electronics deliverables.</div>
+                </span>
+              </button>
+              <div class="achv-tags">
+                <span class="chip">VHDL</span><span class="chip">Sensor Fusion</span><span class="chip">DSP Filter Chain</span><span class="chip">PLL/MMCM</span><span class="chip">Safety FSM</span>
+              </div>
+              <div class="achv-detail">
+                <div class="achv-detail-inner">Contributed to additional cross-domain deliverables as part of the wider engineering team: a VHDL multi-sensor fusion design with a UART packet-parser FSM, a multi-rate DSP filter chain with high stopband attenuation, and a PLL/MMCM-driven signal-generation design with safety FSM and SPI DAC control for a biomedical-electronics application.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-head">
+            <span class="tl-role">Signal &amp; Telecom Intern</span>
+            <span class="tl-org">— Indian Railways, Guwahati</span>
+            <span class="tl-dates">JUL 2023 — AUG 2023</span>
+          </div>
+          <p class="tl-bullet">Audited 50+ railway signaling network nodes and tested interlocking/track-circuit monitoring equipment, contributing to a 20% increase in network throughput.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-head">
+            <span class="tl-role">Python Development Intern</span>
+            <span class="tl-org">— IIT Guwahati</span>
+            <span class="tl-dates">AUG 2022 — OCT 2022</span>
+          </div>
+          <p class="tl-bullet">Engineered Python automation scripts for LaTeX corpus analysis (100% extraction accuracy) and built a Tkinter GUI that cut manual processing time by one-fifth.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-head">
+            <span class="tl-role">Deep Learning Research Intern</span>
+            <span class="tl-org">— IIT Guwahati</span>
+            <span class="tl-dates">AUG 2022 — SEP 2022</span>
+          </div>
+          <p class="tl-bullet">Extended a Deep-Waveform learned OFDM receiver architecture under Prof. Dr. Kuntal Deka, restructuring the DNN to cut symbol classification error by 5% across SNR sweeps.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <div class="eyebrow reveal">Projects</div>
+      <h2 class="section-title reveal">What I've built</h2>
+
+      <div class="filters reveal">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="fpga">FPGA &amp; Hardware</button>
+        <button class="filter-btn" data-filter="ml">ML &amp; Software</button>
+      </div>
+
+      <div class="project-grid-featured reveal">
+        <div class="project-card" data-category="fpga">
+          <span class="cat-pill fpga">FPGA &amp; Hardware</span>
+          <h3>Multi-Channel FPGA ADC Data Acquisition System <span class="subtitle">(M.Tech Thesis)</span></h3>
+          <div class="stack">Zynq-7020 · LTC2175 · AXI DMA · Gigabit Ethernet · Vivado XSIM</div>
+          <ul>
+            <li>Designed a 4-channel, 14-bit real-time acquisition pipeline (LTC2175 ADC → AXI-Stream FIFO → Scatter-Gather DMA → lwIP UDP → PyQt6 GUI); resolved a DMA-idle FIFO-overflow bug and a double-buffer cache-coherency race.</li>
+            <li>Implemented a centroid-based peak-detection FSM for FBG interrogation and used ILA to root-cause a clock-routing defect (missing BUFG) that was stalling waveform capture.</li>
+            <li>Wrote Verilog/VHDL testbenches and ran functional simulation in Vivado Simulator (XSIM) to validate DMA control logic and peak-detection FSM behavior prior to hardware bring-up.</li>
+          </ul>
+        </div>
+
+        <div class="project-card" data-category="ml">
+          <span class="cat-pill ml">ML &amp; Neuromorphic Computing</span>
+          <h3>Memristor-Inspired Spiking Neuromorphic Architecture <span class="subtitle">(Hand Gesture Recognition)</span></h3>
+          <div class="stack">MediaPipe · Spiking Neural Networks · Memristor-Inspired Computing · Python</div>
+          <ul>
+            <li>Designed a hybrid neuromorphic system combining MediaPipe hand-landmark extraction with a memristor-driven spiking neural network (SNN) for real-time gesture classification.</li>
+            <li>Built the full pipeline from landmark extraction through spike-encoding to SNN inference, targeting low-power healthcare rehabilitation applications.</li>
+          </ul>
+          <div class="stat-callout">
+            <span class="num">99.8%</span>
+            <span class="lbl">classification accuracy across 21 gesture classes at 20+ FPS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-grid-standard reveal">
+        <div class="project-card standard" data-category="ml">
+          <span class="cat-pill ml">Computer Vision</span>
+          <h3>Diabetic Retinopathy Detection</h3>
+          <div class="desc">Deep-learning classification pipeline reaching 83% accuracy; findings presented at the International Conference on Contemporary Researches in Engineering, Science, Management &amp; Arts.</div>
+        </div>
+        <div class="project-card standard" data-category="fpga">
+          <span class="cat-pill fpga">Embedded Systems</span>
+          <h3>Embedded Indicators Control</h3>
+          <div class="desc">Real-time automotive indicator control system using MATLAB Simulink Stateflow and PSoC Creator 4.4, integrating FSM logic across GPIO, PWM, Timer, and UART modules.</div>
+        </div>
+        <div class="project-card standard" data-category="ml">
+          <span class="cat-pill ml">Computer Vision</span>
+          <h3>Automated Number Plate Detection</h3>
+          <div class="desc">OpenCV-based detection pipeline achieving 89% accuracy across 1,000+ images and 20+ hours of video.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="container">
+      <div class="eyebrow reveal">Education</div>
+      <h2 class="section-title reveal">Academics</h2>
+      <div class="edu-grid">
+        <div class="edu-card reveal">
+          <div class="school">Indian Institute of Information Technology Guwahati</div>
+          <div class="loc">Guwahati, Assam</div>
+          <div class="degree">Master of Technology in VLSI and Embedded Systems</div>
+          <div class="meta-row"><span class="cgpa">CGPA 8.08</span><span class="dates">JUL 2024 — JUL 2026</span></div>
+        </div>
+        <div class="edu-card reveal">
+          <div class="school">Jorhat Institute of Science &amp; Technology</div>
+          <div class="loc">Jorhat, Assam</div>
+          <div class="degree">B.Tech in Electrical, Electronics and Communications Engineering</div>
+          <div class="meta-row"><span class="cgpa">CGPA 6.92</span><span class="dates">AUG 2020 — JUL 2024</span></div>
+        </div>
+      </div>
+
+      <div class="eyebrow reveal" style="margin-top:var(--s-16);">Certifications</div>
+      <p class="cert-line reveal">MATLAB Certified <span class="sep">/</span> Data Science with Python — UDGAM Program, IIT Guwahati</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="eyebrow reveal">Contact</div>
+      <h2 class="section-title reveal">Let's talk hardware.</h2>
+      <div class="contact-grid reveal">
+        <button class="contact-card" id="copy-email">
+          <span class="label">Email</span>
+          <span class="value" id="email-value">imsimantasarkar@gmail.com</span>
+        </button>
+        <a class="contact-card" href="tel:+919101715776">
+          <span class="label">Phone</span>
+          <span class="value">+91 91017 15776</span>
+        </a>
+        <a class="contact-card" href="https://linkedin.com/in/imsimantasarkar" target="_blank" rel="noopener">
+          <span class="label">LinkedIn</span>
+          <span class="value">/in/imsimantasarkar ↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <span>SIMANTA_SARKAR // FPGA_RTL_DESIGN_ENGINEER</span>
+    <span>KOLKATA, WEST BENGAL, IN — 2026</span>
+  </div>
+</footer>
+
+<button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Oscilloscope canvas ---------- */
+  var canvas = document.getElementById('scope-canvas');
+  var ctx = canvas.getContext('2d');
+  var hero = document.querySelector('.hero');
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var w, h, t = 0;
+
+  function resize(){
+    w = hero.clientWidth; h = hero.clientHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function drawGrid(){
+    ctx.strokeStyle = 'rgba(76,255,147,0.055)';
+    ctx.lineWidth = 1;
+    var step = 48;
+    for(var x=0; x<w; x+=step){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
+    for(var y=0; y<h; y+=step){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+    ctx.strokeStyle = 'rgba(76,255,147,0.12)';
+    ctx.beginPath(); ctx.moveTo(0,h/2); ctx.lineTo(w,h/2); ctx.stroke();
+  }
+
+  function drawTrace(freq, amp, phase, color, glow, yOffset, envelope){
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = glow;
+    var midY = h/2 + yOffset;
+    for(var x=0; x<=w; x+=4){
+      var env = envelope ? envelope(x) : 1;
+      var y = midY + Math.sin(x*freq + phase) * amp * env;
+      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  function frame(){
+    ctx.clearRect(0,0,w,h);
+    drawGrid();
+
+    var ampScale = Math.min(h*0.14, 90);
+
+    // CH1 green — steady ADC-like capture
+    drawTrace(0.018, ampScale, t*1.4, 'rgba(76,255,147,0.85)', 8, -h*0.10, null);
+
+    // CH2 amber — burst-modulated pulse train
+    drawTrace(0.05, ampScale*0.6, t*2.1, 'rgba(255,176,32,0.75)', 6, h*0.16, function(x){
+      var cyc = 260;
+      var pos = (x + t*160) % cyc;
+      return pos < 90 ? 1 : 0.05;
+    });
+
+    if(!reduceMotion){ t += 0.016; requestAnimationFrame(frame); }
+  }
+
+  if(reduceMotion){ t = 10; frame(); }
+  else { requestAnimationFrame(frame); }
+
+  /* ---------- Scroll reveal ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  /* ---------- Scrollspy nav ---------- */
+  var navLinks = document.querySelectorAll('[data-nav]');
+  var sections = ['about','experience','projects','education','contact'].map(function(id){ return document.getElementById(id); });
+  function onScroll(){
+    var pos = window.scrollY + window.innerHeight * 0.35;
+    var current = sections[0];
+    sections.forEach(function(sec){ if(sec && sec.offsetTop <= pos) current = sec; });
+    navLinks.forEach(function(link){
+      link.classList.toggle('active', current && link.getAttribute('href') === '#' + current.id);
+    });
+
+    var backBtn = document.getElementById('back-to-top');
+    backBtn.classList.toggle('show', window.scrollY > 600);
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  /* ---------- Mobile menu ---------- */
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('mobile-menu');
+  burger.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ---------- Expandable achievement cards ---------- */
+  document.querySelectorAll('.achv-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var card = btn.closest('.achv');
+      var detail = card.querySelector('.achv-detail');
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      card.setAttribute('aria-expanded', String(!expanded));
+      if(!expanded){
+        detail.style.maxHeight = detail.scrollHeight + 'px';
+      } else {
+        detail.style.maxHeight = 0;
+      }
+    });
+  });
+
+  /* ---------- Project filters ---------- */
+  var filterBtns = document.querySelectorAll('.filter-btn');
+  var projectCards = document.querySelectorAll('.project-card[data-category]');
+  filterBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      filterBtns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var f = btn.dataset.filter;
+      projectCards.forEach(function(card){
+        var show = (f === 'all') || (card.dataset.category === f);
+        card.classList.toggle('is-hidden', !show);
+      });
+    });
+  });
+
+  /* ---------- Copy email ---------- */
+  var copyBtn = document.getElementById('copy-email');
+  var toast = document.getElementById('toast');
+  copyBtn.addEventListener('click', function(){
+    var text = document.getElementById('email-value').textContent;
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(showToast);
+    } else {
+      showToast();
+    }
+  });
+  function showToast(){
+    toast.classList.add('show');
+    setTimeout(function(){ toast.classList.remove('show'); }, 2000);
+  }
+
+  /* ---------- Back to top ---------- */
+  document.getElementById('back-to-top').addEventListener('click', function(){
+    window.scrollTo({ top:0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
