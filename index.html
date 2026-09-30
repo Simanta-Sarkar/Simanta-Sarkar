@@ -696,7 +696,6 @@
             <span class="tl-org">— Berylline Labs Pvt. Ltd., Kolkata, WB</span>
             <span class="tl-dates">FEB 2026 — PRESENT</span>
           </div>
-          <p class="tl-note">/</p>
 
           <div class="achv-list">
 
@@ -812,10 +811,10 @@
         <div class="project-card" data-category="fpga">
           <span class="cat-pill fpga">FPGA &amp; Hardware</span>
           <h3>Multi-Channel FPGA ADC Data Acquisition System <span class="subtitle">(M.Tech Thesis)</span></h3>
-          <div class="stack">Zynq-7020 · LTC2175 · AXI DMA · Gigabit Ethernet · Vivado XSIM</div>
+          <div class="stack">Zynq-7000 SoC · High-Speed ADC · AXI DMA · Gigabit Ethernet · Vivado XSIM</div>
           <ul>
-            <li>Designed a 4-channel, 14-bit real-time acquisition pipeline (LTC2175 ADC → AXI-Stream FIFO → Scatter-Gather DMA → lwIP UDP → PyQt6 GUI); resolved a DMA-idle FIFO-overflow bug and a double-buffer cache-coherency race.</li>
-            <li>Implemented a centroid-based peak-detection FSM for FBG interrogation and used ILA to root-cause a clock-routing defect (missing BUFG) that was stalling waveform capture.</li>
+            <li>Designed a multi-channel, real-time data acquisition pipeline (ADC → AXI-Stream FIFO → Scatter-Gather DMA → lwIP UDP → PyQt6 GUI); resolved a DMA-idle FIFO-overflow bug and a double-buffer cache-coherency race.</li>
+            <li>Implemented a centroid-based peak-detection FSM for optical sensor signal interrogation and used ILA to root-cause a clock-routing defect (missing BUFG) that was stalling waveform capture.</li>
             <li>Wrote Verilog/VHDL testbenches and ran functional simulation in Vivado Simulator (XSIM) to validate DMA control logic and peak-detection FSM behavior prior to hardware bring-up.</li>
           </ul>
         </div>
